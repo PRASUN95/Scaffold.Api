@@ -1,5 +1,5 @@
 <Solution>
+  <Project Path="Scaffold.Api.Core.Services/Scaffold.Api.Core.Services.csproj" />
   <Project Path="Scaffold.Api.Dtos/Scaffold.Api.Dtos.csproj" />
   <Project Path="Scaffold.Api/Scaffold.Api.csproj" />
-  <Project Path="Scaffold.Core.Services/Scaffold.Api.Core.Services.csproj" />
 </Solution>

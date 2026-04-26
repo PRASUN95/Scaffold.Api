@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Scaffold.Core.Services\Scaffold.Api.Core.Services.csproj" />
+    <ProjectReference Include="..\Scaffold.Api.Core.Services\Scaffold.Api.Core.Services.csproj" />
   </ItemGroup>
 
 </Project>
