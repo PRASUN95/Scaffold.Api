@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Scaffold.Api.Core.Services.Interface;
+using Scaffold.Api.Core.Services.Options;
 using Scaffold.Api.Core.Services.Services;
 using System.Text;
 
@@ -15,12 +16,15 @@ namespace Scaffold.Api.Core.Services.Extensions
             return services;
         }
 
+        public static IServiceCollection AddOptions(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<JwtOptions>(configuration.GetSection("Jwt"));
+            return services;
+        }
+
         public static IServiceCollection AddBearerAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            var jwtSettings = configuration.GetSection("Jwt");
-            var secret = jwtSettings["secret"];
-            var issuer = jwtSettings["issuer"];
-            var scope = jwtSettings["scope"];
+            var jwtSettings = configuration.GetSection("Jwt").Get<JwtOptions>()!;
 
             services.AddAuthentication(options =>
             {
@@ -35,9 +39,10 @@ namespace Scaffold.Api.Core.Services.Extensions
                     ValidateAudience = true,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
-                    ValidIssuer = issuer,
-                    ValidAudience = scope,
-                    IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret))
+                    ValidIssuer = jwtSettings.Issuer,
+                    ValidAudience = jwtSettings.Scope,
+                    IssuerSigningKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret)),
+                    ClockSkew = TimeSpan.Zero
                 };
             });
 

@@ -8,6 +8,7 @@ namespace Scaffold.Api.Extensions
         public static WebApplication ConfigureServices(this WebApplicationBuilder builder)
         {
             builder.Services.AddBearerAuthentication(builder.Configuration);
+            builder.Services.AddOptions(builder.Configuration);
             builder.Services.AddCoreServices();
             builder.Services.AddControllers();
             builder.Services.AddOpenApi();

@@ -7,7 +7,7 @@ namespace Scaffold.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    [Authorize]  // Requires valid JWT token
+    [Authorize]
     public class WeatherForecastController(IWeatherForecastService weatherForecastService) : ControllerBase
     {
         private readonly IWeatherForecastService _weatherForeCastService = weatherForecastService;
