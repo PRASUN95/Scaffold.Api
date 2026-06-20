@@ -15,14 +15,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
+        source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     - name: Restore dependencies
       run: dotnet restore
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build --no-restore --configuration Release Scaffold.Api /p:Version=1.0.${{ github.run_number }}
     - name: Test
       run: dotnet test --no-build --verbosity normal
+    - name: Create the package
+      run: dotnet pack --no-build --configuration Release Scaffold.Api /p:Version=1.0.${{ github.run_number }}
+
+    - name: Push to GitHub Packages
+      run: dotnet nuget push Scaffold.Api/bin/Release/*.nupkg --skip-duplicate
